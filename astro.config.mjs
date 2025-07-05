@@ -12,6 +12,7 @@ export default defineConfig({
     }),
   ],
   site: SITE_URL,
+  base: '/blogs',
   markdown: {
     syntaxHighlight: "shiki",
     shikiConfig: {
