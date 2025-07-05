@@ -1,5 +1,5 @@
 .post p {
-  @apply leading-7 text-theme-primary-text;
+  @apply leading-relaxed text-theme-primary-text mb-6;
 }
 
 .post code {
@@ -7,11 +7,15 @@
 }
 
 .post h2 {
-  @apply mt-6 text-3xl text-theme-primary-text font-semibold;
+  @apply mt-8 mb-4 text-3xl text-theme-primary-text font-semibold;
 }
 
 .post h3 {
-  @apply mt-4 text-xl text-theme-primary-text font-medium;
+  @apply mt-6 mb-3 text-xl text-theme-primary-text font-medium;
+}
+
+.post h4 {
+  @apply mt-4 mb-2 text-lg text-theme-primary-text font-medium;
 }
 
 .post a {
@@ -19,17 +23,34 @@
 }
 
 .post ul {
-  @apply list-disc text-theme-primary-text;
+  @apply list-disc text-theme-primary-text mb-6 ml-6 space-y-2;
+}
+
+.post ol {
+  @apply list-decimal text-theme-primary-text mb-6 ml-6 space-y-2;
+}
+
+.post li {
+  @apply leading-relaxed;
 }
 
 .post blockquote {
-  @apply flex flex-row gap-2 before:block before:h-auto before:w-1 before:max-w-[1px] before:bg-theme-primary-accent before:content-[''];
+  @apply flex flex-row gap-2 mb-6 italic text-theme-secondary-text before:block before:h-auto before:w-1 before:max-w-[1px] before:bg-theme-primary-accent before:content-[''];
 }
 
 .post pre {
-  @apply p-4 bg-theme-code-bg rounded-lg;
+  @apply p-4 mb-6 bg-theme-code-bg rounded-lg overflow-x-auto;
 }
 
 .post pre > code {
   @apply bg-transparent;
+}
+
+/* Additional spacing for better readability */
+.post > *:first-child {
+  @apply mt-0;
+}
+
+.post > *:last-child {
+  @apply mb-0;
 }
