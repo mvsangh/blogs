@@ -1,49 +1,119 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets"
+
+import Layout from "@/layouts/Layout.astro";
+import SocialLinks from "@/components/SocialLinks.astro";
+import PostCard from "@/components/PostCard.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import Link from "@/components/shared/Link.astro";
+import convertAsteriskToStrongTag from "@/utils/convertAsteriskToStrongTag";
+
+import presentation from "@/data/presentation";
+import projects from "@/data/projects";
+
+const posts = (await getCollection("posts"))
+  .filter((post) => 
+    post.data.isPublish && 
+    !post.data.isDraft && 
+    post.data.publishedAt <= new Date()
+  )
+  .sort((first, second) => 
+    second.data.publishedAt.getTime() - first.data.publishedAt.getTime()
+  );
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This
-				template serves as a lightweight, minimally-styled starting point for anyone looking to build
-				a personal website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
-		</main>
-		<Footer />
-	</body>
-</html>
+<Layout>
+  <main class="flex flex-col gap-20">
+    <article
+      class="flex flex-col gap-8 md:flex-row-reverse md:justify-end md:gap-12"
+    >
+      {
+        presentation.profile && (
+          <Image
+            src={presentation.profile}
+            class="w-1/4 self-center rounded-full animate-scaleIn"
+            alt="Your Profile"
+            width="200"
+            height="200"
+          />
+        )
+      }
+
+      <div class="flex flex-col gap-8">
+        <h1 class="text-3xl text-theme-primary-text animate-fadeInUp">
+          {presentation.title}
+        </h1>
+
+        <h2
+          class="w-auto max-w-[60ch] leading-6 text-theme-secondary-text animate-fadeInUp animation-delay-200"
+          set:html={convertAsteriskToStrongTag(presentation.description)}
+        />
+
+        <div class="animate-fadeInUp animation-delay-400">
+          <SocialLinks />
+        </div>
+      </div>
+    </article>
+
+    <article class="flex flex-col gap-8 scroll-reveal">
+      <header class="flex w-full flex-row justify-between gap-2">
+        <h3 class="text-lg text-neutral-100">Latest posts</h3>
+        <Link href="/posts" label="See all posts" isUnderline target="_self" />
+      </header>
+      {posts.length === 0 && <p>Soon, stay connected 👀...</p>}
+
+      <section class="flex flex-col gap-4 md:flex-row md:flex-wrap">
+        {
+          posts.length !== 0 &&
+            posts
+              .slice(0, 2)
+              .map((post, index) => (
+                <div class={`scroll-reveal animation-delay-${(index + 1) * 200}`}>
+                  <PostCard
+                    publishedAt={post.data.publishedAt}
+                    title={post.data.title}
+                    description={post.data.description}
+                    slug={post.slug}
+                  />
+                </div>
+              ))
+        }
+      </section>
+    </article>
+
+    <article class="flex flex-col gap-8 scroll-reveal">
+      <header class="flex w-full flex-row justify-between gap-2">
+        <h3 class="text-lg text-neutral-100">
+          Selected projects ({projects.length})
+        </h3>
+      </header>
+      {projects.length === 0 && <p>Oops, I must work^^^^^</p>}
+
+      <section class="flex flex-col gap-4">
+        {
+          projects.length !== 0 &&
+            projects.map((project, index) => (
+              <div class={`scroll-reveal animation-delay-${(index + 1) * 200}`}>
+                <ProjectCard {...project} />
+              </div>
+            ))
+        }
+      </section>
+    </article>
+
+    <article class="flex flex-col gap-8">
+      <header class="flex w-full flex-row justify-between gap-2">
+        <h3 class="text-lg text-neutral-100">Get in touch</h3>
+      </header>
+      <p>
+        Email me at <Link
+          href={`mailto:${presentation.mail}`}
+          label={presentation.mail}
+        /> or follow me via my social links.
+      </p>
+
+      <SocialLinks />
+    </article>
+  </main>
+</Layout>

@@ -1,0 +1,43 @@
+---
+import Header from "../components/Header.astro";
+import BlurCircle from "@/components/shared/BlurCircle.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import ScrollReveal from "@/components/ScrollReveal.astro";
+import AnimatedBackground from "@/components/AnimatedBackground.astro";
+import theme from "@/data/theme";
+import SEOTags from "@/components/seo/SEOTags.astro";
+import type { HeadTags } from "@/utils/types/HeadTags";
+
+import "@/styles/tailwind.css";
+import "@/styles/global.css";
+import "@/styles/post.css";
+import "@/styles/animations.css";
+
+export type Props = HeadTags;
+
+const headTags = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <SEOTags {...headTags} />
+  <script is:inline>
+    // Prevent flash of unstyled content
+    const theme = localStorage.getItem('theme') || 
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
+  <body
+    class="mx-auto flex min-h-screen max-w-[872px] flex-col gap-9 bg-theme-primary-bg px-10 py-8 text-sm text-theme-secondary-text md:gap-20 md:py-16"
+  >
+    <AnimatedBackground />
+    <ThemeToggle />
+    <Header />
+    <BlurCircle position="top" color={theme.colors.blur.top} />
+    <BlurCircle position="bottom" color={theme.colors.blur.bottom} />
+    <slot />
+    <ScrollReveal />
+  </body>
+</html>

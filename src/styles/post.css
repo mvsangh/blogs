@@ -1,0 +1,35 @@
+.post p {
+  @apply leading-7 text-theme-primary-text;
+}
+
+.post code {
+  @apply rounded-sm bg-theme-code-bg px-1 py-[2px] text-theme-primary-accent;
+}
+
+.post h2 {
+  @apply mt-6 text-3xl text-theme-primary-text font-semibold;
+}
+
+.post h3 {
+  @apply mt-4 text-xl text-theme-primary-text font-medium;
+}
+
+.post a {
+  @apply text-theme-link underline hover:text-theme-link-hover transition-colors;
+}
+
+.post ul {
+  @apply list-disc text-theme-primary-text;
+}
+
+.post blockquote {
+  @apply flex flex-row gap-2 before:block before:h-auto before:w-1 before:max-w-[1px] before:bg-theme-primary-accent before:content-[''];
+}
+
+.post pre {
+  @apply p-4 bg-theme-code-bg rounded-lg;
+}
+
+.post pre > code {
+  @apply bg-transparent;
+}

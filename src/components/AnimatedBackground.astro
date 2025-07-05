@@ -1,0 +1,62 @@
+---
+// Animated gradient background component
+---
+
+<div class="animated-bg-wrapper">
+  <div class="animated-gradient-bg"></div>
+</div>
+
+<style>
+  .animated-bg-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .animated-gradient-bg {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background: radial-gradient(
+      circle at 20% 80%,
+      var(--color-primary-accent) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      var(--color-secondary-accent) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 40% 40%,
+      var(--color-primary-accent) 0%,
+      transparent 50%
+    );
+    opacity: 0.05;
+    animation: gradientRotate 30s ease infinite;
+  }
+
+  @keyframes gradientRotate {
+    0% {
+      transform: rotate(0deg) scale(1);
+    }
+    50% {
+      transform: rotate(180deg) scale(1.2);
+    }
+    100% {
+      transform: rotate(360deg) scale(1);
+    }
+  }
+
+  /* Stronger effect in dark mode */
+  [data-theme="dark"] .animated-gradient-bg {
+    opacity: 0.1;
+  }
+</style>
