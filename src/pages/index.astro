@@ -26,21 +26,9 @@ const posts = (await getCollection("posts"))
 <Layout>
   <main class="flex flex-col gap-20">
     <article
-      class="flex flex-col gap-8 md:flex-row-reverse md:justify-end md:gap-12"
+      class="flex flex-col gap-8 md:flex-row md:justify-between md:gap-12 md:items-center"
     >
-      {
-        presentation.profile && (
-          <Image
-            src={presentation.profile}
-            class="w-1/4 self-center rounded-full animate-scaleIn"
-            alt="Your Profile"
-            width="200"
-            height="200"
-          />
-        )
-      }
-
-      <div class="flex flex-col gap-8">
+      <div class="flex flex-col gap-8 md:flex-1">
         <h1 class="text-3xl text-theme-primary-text animate-fadeInUp">
           {presentation.title}
         </h1>
@@ -54,11 +42,24 @@ const posts = (await getCollection("posts"))
           <SocialLinks />
         </div>
       </div>
+
+      <div class="flex-shrink-0 animate-scaleIn animation-delay-600 self-center md:self-auto">
+        <video
+          src="/videos/video.mp4"
+          class="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-cover rounded-full shadow-lg border-2 border-theme-primary-text/20"
+          autoplay
+          muted
+          loop
+          playsinline
+        >
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </article>
 
     <article class="flex flex-col gap-8 scroll-reveal">
       <header class="flex w-full flex-row justify-between gap-2">
-        <h3 class="text-lg text-neutral-100">Latest posts</h3>
+        <h3 class="text-lg text-theme-primary-text">Latest posts</h3>
         <Link href="/posts" label="See all posts" isUnderline target="_self" />
       </header>
       {posts.length === 0 && <p>Soon, stay connected 👀...</p>}
@@ -84,7 +85,7 @@ const posts = (await getCollection("posts"))
 
     <article class="flex flex-col gap-8 scroll-reveal">
       <header class="flex w-full flex-row justify-between gap-2">
-        <h3 class="text-lg text-neutral-100">
+        <h3 class="text-lg text-theme-primary-text">
           Selected projects ({projects.length})
         </h3>
       </header>
@@ -104,7 +105,7 @@ const posts = (await getCollection("posts"))
 
     <article class="flex flex-col gap-8">
       <header class="flex w-full flex-row justify-between gap-2">
-        <h3 class="text-lg text-neutral-100">Get in touch</h3>
+        <h3 class="text-lg text-theme-primary-text">Get in touch</h3>
       </header>
       <p>
         Email me at <Link
